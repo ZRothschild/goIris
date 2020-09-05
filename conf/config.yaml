@@ -1,0 +1,56 @@
+Global:
+  App: IrisForum
+  Env: Dev
+  Backend: Backend
+  Frontend: Frontend
+IrisForum:
+  Frontend:
+    Dev:
+      MySql:
+        Frontend:
+          Host: 127.0.0.1
+          User: root
+          DbName: iris_tes
+          Pwd: root
+          Port: 3306
+      Log:
+        Service:
+          TimeFormat: 2006/01/02 15:04:05.000 -0700
+          Level: info # 不写默认是info
+          Extra:
+          Formatter: json
+          StorageMode:
+            File:
+              Formatter: json
+              Rotation:
+                Hours: 24
+                Count: 7
+                Postfix: .%Y%m%d%H%M
+              Path:
+                Panic: panic
+                Fatal: fatal
+                Error: error
+                Warn:  warn
+                Debug: debug
+                Trace: trace
+                Info:  info
+        Recovery:
+          TimeFormat: 2006/01/02 15:04:05.000 -0700
+          Level: info # 不写默认是info
+          Extra:
+          Formatter: json
+          StorageMode:
+            File:
+              Formatter: json
+              Rotation:
+                Hours: 24
+                Count: 7
+                Postfix: .%Y%m%d%H%M
+              Path:
+                Panic: panic
+                Fatal: fatal
+                Error: error
+                Warn:  warn
+                Debug: debug
+                Trace: trace
+                Info:  info
