@@ -9,7 +9,7 @@ import (
 	"github.com/ZRothschild/goIris/config/viper"
 	"github.com/ZRothschild/goIris/frontend/web/controller"
 	"github.com/ZRothschild/goIris/frontend/web/service"
-	"github.com/ZRothschild/goIris/utils/help"
+	"github.com/ZRothschild/goIris/utils/lib/viperKey"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
@@ -33,17 +33,15 @@ func init() {
 	})
 
 	// viper 设置
-	newViper = viper.NewViper(conf.FrontendConfName, conf.FrontendConfType, conf.FrontendConfPath)
+	newViper = viper.NewViper(conf.FrontendConfName, conf.FrontendConfType, conf.FrontendConfPathFirst)
 
 	// 数据库
-	frontMySqlViperKey, _ := help.FrontMySqlViperKey("Frontend", newViper)
-	dB = db.NewMySql(frontMySqlViperKey, newViper)
-
-	//
-	frontLogViperKey, _ := help.FrontLogViperKey("Service", newViper)
+	frontMySql, _ := viperKey.MySql(conf.Frontend,"Frontend", newViper)
+	dB,_ = db.NewMySql(frontMySql, newViper)
 
 	// 获取日志
-	logSrv, _ = logger.NewLog(frontLogViperKey, newViper)
+	frontLog, _ := viperKey.Log(conf.Frontend,"Service", newViper)
+	logSrv, _ = logger.NewLog(frontLog, newViper)
 }
 
 // 初始化 路由
@@ -68,16 +66,3 @@ func users(application *mvc.Application) {
 	// 控制器载入
 	application.Handle(new(controller.User))
 }
-
-
-// 初始化控制器依赖
-// func InitDependent() (*sessions.Sessions, *gorm.DB, *viper2.Viper) {
-// 	sessManager := sessions.New(sessions.Config{
-// 		Cookie:  "sessionId",
-// 		Expires: 24 * time.Hour,
-// 	})
-// 	newViper := viper.NewViper(conf.FrontendConfName, conf.FrontendConfType, conf.FrontendConfPath)
-// 	frontMySqlViperKey, _ := help.FrontMySqlViperKey("Frontend", newViper)
-// 	dB := db.NewMySql(frontMySqlViperKey, newViper)
-// 	return sessManager, dB, newViper
-// }
