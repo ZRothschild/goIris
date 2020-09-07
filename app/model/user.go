@@ -24,7 +24,7 @@ type User struct {
 	Company       string `gorm:"not null;default:'';column:company;comment:'所在公司'" json:"company"`
 	Sign          string `gorm:"not null;default:'';column:sign;comment:'签名信息'" json:"-"`
 	Sex           uint8  `gorm:"not null;default:1;column:sex;comment:'1 未定 2 男 3 女'" json:"sex"`
-	VerifyType    uint8  `gorm:"not null;default:1;column:verify_type;comment:'暂定'" json:"verifyType"`
+	VerifyType    uint8  `gorm:"not null;default:1;column:verify_type;comment:'暂定 1 默认值'" json:"verifyType"`
 	AuthType      uint8  `gorm:"not null;default:1;column:auth_type;comment:''1未认证  2 github认证 3 qq认证 4 微信认证''" json:"authType"`
 	Status        uint8  `gorm:"not null;default:1;column:status;comment:'1 正常 2 非正常用户'" json:"status"`
 	GithubId      uint64 `gorm:"not null;default:0;column:github_id;comment:'github id'" json:"githubId"`

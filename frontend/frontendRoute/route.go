@@ -19,10 +19,10 @@ import (
 )
 
 var (
+	dB          *gorm.DB
+	logSrv      *logger.Logger
+	newViper    *viper2.Viper
 	sessManager *sessions.Sessions
-	dB *gorm.DB
-	newViper *viper2.Viper
-	logSrv *logger.Logger
 )
 
 func init() {
@@ -36,11 +36,11 @@ func init() {
 	newViper = viper.NewViper(conf.FrontendConfName, conf.FrontendConfType, conf.FrontendConfPathFirst)
 
 	// 数据库
-	frontMySql, _ := viperKey.MySql(conf.Frontend,"Frontend", newViper)
-	dB,_ = db.NewMySql(frontMySql, newViper)
+	frontMySql, _ := viperKey.MySql(conf.Frontend, "Frontend", newViper)
+	dB, _ = db.NewMySql(frontMySql, newViper)
 
 	// 获取日志
-	frontLog, _ := viperKey.Log(conf.Frontend,"Service", newViper)
+	frontLog, _ := viperKey.Log(conf.Frontend, "Service", newViper)
 	logSrv, _ = logger.NewLog(frontLog, newViper)
 }
 

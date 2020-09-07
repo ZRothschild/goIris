@@ -34,6 +34,15 @@ func NewMySql(viperKey string, viper *viper.Viper) (*gorm.DB, error) {
 	if err != nil {
 		return dB, err
 	}
+	sqlDB, err := dB.DB()
+	if err != nil {
+		return dB, err
+	}
+	// SetMaxIdleConns 设置空闲连接池中连接的最大数量
+	sqlDB.SetMaxIdleConns(10)
+
+	// SetMaxOpenConns 设置打开数据库连接的最大数量。
+	sqlDB.SetMaxOpenConns(100)
 	dB = dB.Debug()
 
 	// 数据迁移
