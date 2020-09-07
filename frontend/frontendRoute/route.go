@@ -36,11 +36,11 @@ func init() {
 	newViper = viper.NewViper(conf.FrontendConfName, conf.FrontendConfType, conf.FrontendConfPathFirst)
 
 	// 数据库
-	frontMySql, _ := viperKey.MySql(conf.Frontend, "Frontend", newViper)
+	frontMySql, _ := viperKey.MySql("Frontend", newViper)
 	dB, _ = db.NewMySql(frontMySql, newViper)
 
 	// 获取日志
-	frontLog, _ := viperKey.Log(conf.Frontend, "Service", newViper)
+	frontLog, _ := viperKey.Log("Service", newViper)
 	logSrv, _ = logger.NewLog(frontLog, newViper)
 }
 

@@ -3,10 +3,9 @@ package conf
 /****************** 统一定义常量 *********************************/
 
 const (
-	Frontend         = "Frontend"
-	Backend          = "Backend"
-	FrontendConfName = "config"
-	FrontendConfType = "yaml"
+	Backend               = "GoIrisBackend"
+	FrontendConfName      = "config"
+	FrontendConfType      = "yaml"
 	FrontendConfPathFirst = "./conf"
 )
 
