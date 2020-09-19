@@ -2,6 +2,7 @@ package db
 
 import (
 	"github.com/ZRothschild/goIris/app/model"
+	"github.com/ZRothschild/goIris/utils/help/id"
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -34,6 +35,14 @@ func NewMySql(viperKey string, viper *viper.Viper) (*gorm.DB, error) {
 	if err != nil {
 		return dB, err
 	}
+
+	if err = dB.Callback().Create().Before("gorm:create").Register("fill_id", func(db *gorm.DB) {
+		// 自动填充id
+		db.Statement.SetColumn("id", id.NextId(viper))
+	}); err != nil {
+		return dB, err
+	}
+
 	sqlDB, err := dB.DB()
 	if err != nil {
 		return dB, err

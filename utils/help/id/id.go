@@ -9,7 +9,7 @@ import (
 )
 
 // 获取新的程序生成的编号
-func NextId(viper2 viper.Viper) uint64 {
+func NextId(viper2 *viper.Viper) uint64 {
 	id, e := SingletonSnowflakeKeyGen(viper2).NextId()
 	if nil != e {
 		println("get next id failed", e)
@@ -23,7 +23,7 @@ func NextId(viper2 viper.Viper) uint64 {
 var snowflakeKeyGen *Snowflake
 var once sync.Once
 
-func SingletonSnowflakeKeyGen(viper2 viper.Viper) *Snowflake {
+func SingletonSnowflakeKeyGen(viper2 *viper.Viper) *Snowflake {
 	once.Do(func() {
 		snowflakeKeyGen = NewSnowflake(SnowflakeSettings{},viper2)
 	})
@@ -61,7 +61,7 @@ type Snowflake struct {
 	machineId    uint16
 }
 
-func NewSnowflake(st SnowflakeSettings,viper2 viper.Viper) *Snowflake {
+func NewSnowflake(st SnowflakeSettings,viper2 *viper.Viper) *Snowflake {
 	sf := new(Snowflake)
 	sf.mutex = new(sync.Mutex)
 	sf.sequence = uint16(1<<BitLenSequence - 1)

@@ -1,44 +1,71 @@
 package controller
 
 import (
-	"github.com/ZRothschild/goIris/app/model"
+	"github.com/ZRothschild/goIris/frontend/web/param/frontendReq"
 	"github.com/ZRothschild/goIris/frontend/web/service"
+	"github.com/ZRothschild/goIris/utils/help/response"
+	ut "github.com/go-playground/universal-translator"
+	"github.com/go-playground/validator/v10"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/sessions"
 )
 
 type User struct {
-	Ctx     iris.Context
-	UserSrv *service.User
-	Session *sessions.Session
+	Ctx      iris.Context
+	Trans    ut.Translator
+	UserSrv  *service.User
+	Session  *sessions.Session
+	Validate *validator.Validate
 }
 
 // 初始化 user 控制器
-func NewUser(ctx iris.Context, userSrv *service.User, session *sessions.Session) *User {
-	return &User{Ctx: ctx, UserSrv: userSrv, Session: session}
+func NewUser(ctx iris.Context, trans ut.Translator, userSrv *service.User, session *sessions.Session, validate *validator.Validate) *User {
+	return &User{
+		Ctx:      ctx,
+		Trans:    trans,
+		UserSrv:  userSrv,
+		Session:  session,
+		Validate: validate,
+	}
 }
 
-func (c *User) PostCreate() {
+// 用户注册
+func (c *User) PostRegister() {
 	var (
 		err          error
 		rowsAffected int64
-		user         model.User
+		req          frontendReq.UserRegister
 	)
-	if err = c.Ctx.ReadJSON(&user); err != nil {
-		_, _ = c.Ctx.JSON(user)
+
+	if err = c.Ctx.ReadJSON(&req); err != nil {
+		response.CtxErr(c.Ctx, "请求错误", err)
 		return
 	}
 
-	for i := 0; i < 10; i++ {
-		go func(user model.User, i int) {
-			user.ID += uint64(i)
-			rowsAffected, err = c.UserSrv.Create(&user)
-			if err != nil {
-				_, _ = c.Ctx.JSON(rowsAffected)
-				return
-			}
-		}(user, i)
+	if err := c.Validate.Struct(req); err != nil {
+		errs := err.(validator.ValidationErrors)
+		for _, e := range errs {
+			response.CtxErr(c.Ctx, "请求错误", e.Translate(c.Trans))
+			return
+		}
 	}
-	_, _ = c.Ctx.JSON(user)
+	response.CtxSuccess(c.Ctx, "请求成功", nil)
 	return
+	rowsAffected, err = c.UserSrv.Register(&req)
+	_, _ = c.Ctx.JSON(response.Success("请求成功", rowsAffected))
+	// for i := 0; i < 10; i++ {
+	// 	go func(user model.User) {
+	// 		rowsAffected, err = c.UserSrv.Create(&user)
+	// 		if err != nil {
+	// 			_, _ = c.Ctx.JSON(rowsAffected)
+	// 			return
+	// 		}
+	// 	}(user)
+	// }
+	return
+}
+
+// 用户登录
+func (c *User) PostLogin() {
+
 }

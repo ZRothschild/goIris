@@ -4,9 +4,12 @@ package conf
 
 const (
 	Backend               = "GoIrisBackend"
+
+
 	FrontendConfName      = "config"
 	FrontendConfType      = "yaml"
 	FrontendConfPathFirst = "./conf"
+	FrontendConfPathSecond= "./../conf"
 )
 
 /************************  自定义结构体 返回实现  ******************************/

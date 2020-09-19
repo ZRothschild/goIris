@@ -1,5 +1,9 @@
 package response
 
+import (
+	"github.com/kataras/iris/v12"
+)
+
 const (
 	Suc  = 0
 	Fail = 1
@@ -14,32 +18,62 @@ type Response struct {
 
 // 响应错误
 func RspErr(msg string) (res Response) {
-	res.Status = Fail
-	res.Msg = msg
-	res.Data = nil
+	res = Response{
+		Status: Fail,
+		Msg:    msg,
+		Data:   nil,
+	}
 	return
 }
 
 // 响应成功数据
 func RspSuccess(data interface{}) (res Response) {
-	res.Status = Suc
-	res.Msg = "success"
-	res.Data = data
+	res = Response{
+		Status: Suc,
+		Msg:    "success",
+		Data:   data,
+	}
 	return
 }
 
 // 错误具体返回
 func Err(msg string, data interface{}) (res Response) {
-	res.Status = Fail
-	res.Msg = msg
-	res.Data = data
+	res = Response{
+		Status: Fail,
+		Msg:    msg,
+		Data:   data,
+	}
 	return
 }
 
 // 响应成功具体返回
 func Success(msg string, data interface{}) (res Response) {
-	res.Status = Suc
-	res.Msg = msg
-	res.Data = data
+	res = Response{
+		Status: Suc,
+		Msg:    msg,
+		Data:   data,
+	}
+	return
+}
+
+// 错误具体返回
+func CtxErr(ctx iris.Context, msg string, data interface{}) {
+	res := Response{
+		Status: Fail,
+		Msg:    msg,
+		Data:   data,
+	}
+	_, _ = ctx.JSON(res)
+	return
+}
+
+// 响应成功具体返回
+func CtxSuccess(ctx iris.Context, msg string, data interface{}) {
+	res := Response{
+		Status: Suc,
+		Msg:    msg,
+		Data:   data,
+	}
+	_, _ = ctx.JSON(res)
 	return
 }

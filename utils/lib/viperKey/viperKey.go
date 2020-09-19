@@ -42,6 +42,19 @@ func Log(key string, newViper *viper.Viper) (string, error) {
 	return str + key, err
 }
 
+/**
+获取数据库配置文件viper key
+key 获取类型 validators 配置
+*/
+func Validator(key string, newViper *viper.Viper) (string, error) {
+	var (
+		str string
+		err error
+	)
+	str, err = preViperKey("Validator", newViper)
+	return str + key, err
+}
+
 // 获取配置前缀
 func preViperKey(keyType string, newViper *viper.Viper) (string, error) {
 	var (

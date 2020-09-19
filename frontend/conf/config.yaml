@@ -51,3 +51,7 @@ GoIrisFrontend: # 项目名称
               Debug: debug
               Trace: trace
               Info:  info
+    Validator:
+      Default:
+        Locale: zh
+        Label: label

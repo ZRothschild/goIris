@@ -54,7 +54,7 @@ func DeleteByIds(dB *gorm.DB, value interface{}, ids []uint64) (rowsAffected int
 }
 
 // First
-func First(dB *gorm.DB, where interface{}, out interface{}, args ...interface{}) error {
+func First(dB *gorm.DB, out interface{}, where interface{}, args ...interface{}) error {
 	return dB.Where(where, args...).First(out).Error
 }
 
