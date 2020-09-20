@@ -20,3 +20,9 @@
 1. go test -v -run TestA select_test.go  显示在附加参数中添加了-v，可以让测试时显示详细的流程x
 TestA 和 TestAK 的测试用例都被执行，原因是-run跟随的测试用例的名称支持正则表达式，使用-run TestA$即可只执行 TestA 测试用例。
 2. 当需要终止当前测试用例时，可以使用 FailNow  t.FailNow()  还有一种只标记错误不终止测试的方法  t.Fail()
+
+
+## swag
+
+1. swag init 生成文档
+2. 文档地址 /swagger/index.html

@@ -43,13 +43,15 @@ func NewValidators(viperKey string, viper *viper2.Viper) (validate *validator.Va
 	trans, _ = uni.GetTranslator(validatorCon.Locale) // zh
 	validate = validator.New()
 	// 注册方法
-	validate.RegisterTagNameFunc(func(field reflect.StructField) string {
-		label := field.Tag.Get(validatorCon.Label) // label
-		if label == "" {
-			return field.Name
-		}
-		return label
-	})
+	if validatorCon.Locale == "zh" {
+		validate.RegisterTagNameFunc(func(field reflect.StructField) string {
+			label := field.Tag.Get(validatorCon.Label) // label
+			if label == "" {
+				return field.Name
+			}
+			return label
+		})
+	}
 
 	// 自定义函数checkName与 struct tag 关联起来
 	if err = validate.RegisterValidation("checkName", checkName); err != nil {

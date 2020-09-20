@@ -12,14 +12,14 @@ import (
 
 type User struct {
 	Ctx      iris.Context
-	Trans    ut.Translator
+	Trans    *ut.Translator
 	UserSrv  *service.User
 	Session  *sessions.Session
 	Validate *validator.Validate
 }
 
 // 初始化 user 控制器
-func NewUser(ctx iris.Context, trans ut.Translator, userSrv *service.User, session *sessions.Session, validate *validator.Validate) *User {
+func NewUser(ctx iris.Context, trans *ut.Translator, userSrv *service.User, session *sessions.Session, validate *validator.Validate) *User {
 	return &User{
 		Ctx:      ctx,
 		Trans:    trans,
@@ -30,6 +30,15 @@ func NewUser(ctx iris.Context, trans ut.Translator, userSrv *service.User, sessi
 }
 
 // 用户注册
+// @Summary 用户注册
+// @tags 用户模块
+// @Description 用户注册
+// @ID usersPostRegister
+// @Accept  json
+// @Produce  json
+// @Param 请求参数 json body frontendReq.UserRegister true "请求参数json"
+// @Success 200 {object} response.Response
+// @Router /users/register [POST]
 func (c *User) PostRegister() {
 	var (
 		err          error
@@ -45,14 +54,15 @@ func (c *User) PostRegister() {
 	if err := c.Validate.Struct(req); err != nil {
 		errs := err.(validator.ValidationErrors)
 		for _, e := range errs {
-			response.CtxErr(c.Ctx, "请求错误", e.Translate(c.Trans))
+			response.CtxErr(c.Ctx, "请求错误", e.Translate(*c.Trans))
 			return
 		}
 	}
+
 	response.CtxSuccess(c.Ctx, "请求成功", nil)
 	return
 	rowsAffected, err = c.UserSrv.Register(&req)
-	_, _ = c.Ctx.JSON(response.Success("请求成功", rowsAffected))
+	response.CtxSuccess(c.Ctx, "请求成功", rowsAffected)
 	// for i := 0; i < 10; i++ {
 	// 	go func(user model.User) {
 	// 		rowsAffected, err = c.UserSrv.Create(&user)

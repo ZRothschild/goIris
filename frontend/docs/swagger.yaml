@@ -1,0 +1,51 @@
+definitions:
+  frontendReq.UserRegister:
+    properties:
+      email:
+        type: string
+      nickname:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - nickname
+    - password
+    type: object
+  response.Response:
+    properties:
+      data:
+        type: object
+      msg:
+        type: string
+      status:
+        type: integer
+    type: object
+info:
+  contact: {}
+  license: {}
+paths:
+  /users/register:
+    post:
+      consumes:
+      - application/json
+      description: 用户注册
+      operationId: usersPostRegister
+      parameters:
+      - description: 请求参数json
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/frontendReq.UserRegister'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 用户注册
+      tags:
+      - 用户模块
+swagger: "2.0"

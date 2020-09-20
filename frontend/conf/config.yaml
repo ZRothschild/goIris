@@ -52,6 +52,9 @@ GoIrisFrontend: # 项目名称
               Trace: trace
               Info:  info
     Validator:
-      Default:
+      Zh:
         Locale: zh
+        Label: label
+      En:
+        Locale: en
         Label: label

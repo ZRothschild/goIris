@@ -8,11 +8,14 @@ import (
 	"github.com/ZRothschild/goIris/config/logger"
 	"github.com/ZRothschild/goIris/config/validators"
 	"github.com/ZRothschild/goIris/config/viper"
+	"github.com/ZRothschild/goIris/frontend/docs"
 	"github.com/ZRothschild/goIris/frontend/web/controller"
 	"github.com/ZRothschild/goIris/frontend/web/service"
 	"github.com/ZRothschild/goIris/utils/lib/viperKey"
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
+	"github.com/iris-contrib/swagger/v12"
+	"github.com/iris-contrib/swagger/v12/swaggerFiles"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
@@ -55,14 +58,18 @@ func init() {
 	logSrv, _ = logger.NewLog(viperString, newViper)
 
 	// 验证工具
-	viperString, _ = viperKey.Validator("Default", newViper)
+	viperString, _ = viperKey.Validator("Zh", newViper)
 	validate, trans, _ = validators.NewValidators(viperString, newViper)
 
 }
 
 // 初始化 路由
 func InitRoute(app *iris.Application) {
+	// 用户控制器
 	mvc.Configure(app.Party("/users"), users)
+
+	// API 文档生成
+	goSwagger(app)
 }
 
 // user controller
@@ -77,8 +84,25 @@ func users(application *mvc.Application) {
 	userSrv := service.NewUser(userRepository, logSrv)
 
 	// 依赖注入
-	application.Register(trans, userSrv, sessManager, validate)
+	application.Register(&trans, userSrv, sessManager, validate)
 
 	// 控制器载入
 	application.Handle(new(controller.User))
+}
+
+// swagger 自动生成文档
+func goSwagger(app *iris.Application) {
+	// programmatically set swagger info
+	docs.SwaggerInfo.Version = "1.0"
+	docs.SwaggerInfo.Host = "http://localhost:8080"
+	docs.SwaggerInfo.Title = "Go Iris Api"
+	docs.SwaggerInfo.Description = "go iris api."
+	docs.SwaggerInfo.BasePath = "/v1"
+	docs.SwaggerInfo.Schemes = []string{"http", "https"}
+
+	config := &swagger.Config{
+		URL: "http://localhost:8080/swagger/doc.json", // The url pointing to API definition
+	}
+	// use swagger middleware to
+	app.Get("/swagger/{any:path}", swagger.CustomWrapHandler(config, swaggerFiles.Handler))
 }
