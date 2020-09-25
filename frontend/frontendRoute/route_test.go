@@ -52,16 +52,16 @@ func init() {
 	)
 
 	// 数据库
-	viperStringTest, _ = viperKey.MySql("Frontend", newViperTest)
-	dBTest, _ = db.NewMySql(viperStringTest, newViperTest)
+	viperStringTest, _ = viperKey.PreKeyViper(newViperTest, "Frontend")
+	dBTest, _ = db.NewMySql(newViperTest, viperStringTest)
 
 	// 获取日志
-	viperStringTest, _ = viperKey.Log("Service", newViperTest)
-	logSrvTest, _ = logger.NewLog(viperStringTest, newViperTest)
+	viperStringTest, _ = viperKey.PreKeyViper(newViperTest, "Service")
+	logSrvTest, _ = logger.NewLog(newViperTest, viperStringTest)
 
 	// 验证工具
-	viperStringTest, _ = viperKey.Validator("Zh", newViperTest)
-	validateTest, transTest, _ = validators.NewValidators(viperStringTest, newViperTest)
+	viperStringTest, _ = viperKey.PreKeyViper(newViperTest, "Zh")
+	validateTest, transTest, _ = validators.NewValidators(newViperTest, viperStringTest)
 }
 
 func TestUser_PostRegister(t *testing.T) {
