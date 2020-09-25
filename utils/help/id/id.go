@@ -10,9 +10,8 @@ import (
 
 // 获取新的程序生成的编号
 func NextId(viper2 *viper.Viper) uint64 {
-	id, e := SingletonSnowflakeKeyGen(viper2).NextId()
-	if nil != e {
-		println("get next id failed", e)
+	id, err := SingletonSnowflakeKeyGen(viper2).NextId()
+	if err != nil {
 		return 0
 	}
 	return id
@@ -20,12 +19,14 @@ func NextId(viper2 *viper.Viper) uint64 {
 
 /*------------------------------------------------------Singleton----------------------------------------------------*/
 
-var snowflakeKeyGen *Snowflake
-var once sync.Once
+var (
+	once            = new(sync.Once)
+	snowflakeKeyGen *Snowflake
+)
 
 func SingletonSnowflakeKeyGen(viper2 *viper.Viper) *Snowflake {
 	once.Do(func() {
-		snowflakeKeyGen = NewSnowflake(SnowflakeSettings{},viper2)
+		snowflakeKeyGen = NewSnowflake(SnowflakeSettings{}, viper2)
 	})
 	return snowflakeKeyGen
 }
@@ -61,7 +62,7 @@ type Snowflake struct {
 	machineId    uint16
 }
 
-func NewSnowflake(st SnowflakeSettings,viper2 *viper.Viper) *Snowflake {
+func NewSnowflake(st SnowflakeSettings, viper2 *viper.Viper) *Snowflake {
 	sf := new(Snowflake)
 	sf.mutex = new(sync.Mutex)
 	sf.sequence = uint16(1<<BitLenSequence - 1)
@@ -70,7 +71,7 @@ func NewSnowflake(st SnowflakeSettings,viper2 *viper.Viper) *Snowflake {
 		return nil
 	}
 	if st.StartTime.IsZero() {
-		sf.startTime = toSnowflakeTime(time.Date(2018, 9, 26, 0, 0, 0, 0, time.UTC)) //没有配置默认使用此时间
+		sf.startTime = toSnowflakeTime(time.Date(2018, 9, 26, 0, 0, 0, 0, time.UTC)) // 没有配置默认使用此时间
 	} else {
 		sf.startTime = toSnowflakeTime(st.StartTime)
 	}

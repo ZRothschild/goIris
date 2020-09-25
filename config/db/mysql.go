@@ -20,7 +20,7 @@ type (
 )
 
 // 生成链接对象
-func NewMySql(viperKey string, viper *viper.Viper) (*gorm.DB, error) {
+func NewMySql(viper *viper.Viper, viperKey string) (*gorm.DB, error) {
 	// 初始化数据库
 	var (
 		dns Dns

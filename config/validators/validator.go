@@ -18,7 +18,7 @@ type ValidatorConf struct {
 	Label  string
 }
 
-func NewValidators(viperKey string, viper *viper2.Viper) (validate *validator.Validate, trans ut.Translator, err error) {
+func NewValidators(viper *viper2.Viper, viperKey string) (validate *validator.Validate, trans ut.Translator, err error) {
 	var (
 		validatorCon ValidatorConf
 		translator   locales.Translator
@@ -119,7 +119,7 @@ func TranslateIndividual(validate *validator.Validate, trans ut.Translator) {
 
 func TranslateOverride(validate *validator.Validate, trans ut.Translator) {
 	if err := validate.RegisterTranslation("checkName", trans, func(ut ut.Translator) error {
-		return ut.Add("checkName", "{0} must have a value 赵桥旺!", true) // see universal-translator for details
+		return ut.Add("checkName", "{0} must have a value 测试!", true) // see universal-translator for details
 	}, func(ut ut.Translator, fe validator.FieldError) string {
 		t, _ := ut.T("checkName", fe.Field())
 

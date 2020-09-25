@@ -25,6 +25,7 @@ import (
 )
 
 var (
+	err         error
 	viperString string
 	dB          *gorm.DB
 	newViper    *viper2.Viper
@@ -49,17 +50,38 @@ func init() {
 		conf.FrontendConfPathSecond,
 	)
 
-	// 数据库
-	viperString, _ = viperKey.MySql("Frontend", newViper)
-	dB, _ = db.NewMySql(viperString, newViper)
-
 	// 获取日志
-	viperString, _ = viperKey.Log("Service", newViper)
-	logSrv, _ = logger.NewLog(viperString, newViper)
+	viperString, err = viperKey.PreKeyViper(newViper, "Service")
+	if err != nil {
+		// do
+	}
+
+	logSrv, err = logger.NewLog(newViper, viperString)
+	if err != nil {
+		// do
+	}
+
+	// 数据库
+	viperString, err = viperKey.PreKeyViper(newViper, "Frontend")
+	if err != nil {
+		// do
+	}
+
+	dB, err = db.NewMySql(newViper, viperString)
+	if err != nil {
+		// do
+	}
 
 	// 验证工具
-	viperString, _ = viperKey.Validator("Zh", newViper)
-	validate, trans, _ = validators.NewValidators(viperString, newViper)
+	viperString, err = viperKey.PreKeyViper(newViper, "Zh")
+	if err != nil {
+		// do
+	}
+
+	validate, trans, err = validators.NewValidators(newViper, viperString)
+	if err != nil {
+		// do
+	}
 
 }
 
@@ -69,7 +91,7 @@ func InitRoute(app *iris.Application) {
 	mvc.Configure(app.Party("/users"), users)
 
 	// API 文档生成
-	goSwagger(app)
+	SwaggerApiDoc(app)
 }
 
 // user controller
@@ -91,7 +113,7 @@ func users(application *mvc.Application) {
 }
 
 // swagger 自动生成文档
-func goSwagger(app *iris.Application) {
+func SwaggerApiDoc(app *iris.Application) {
 	// programmatically set swagger info
 	docs.SwaggerInfo.Version = "1.0"
 	docs.SwaggerInfo.Host = "http://localhost:8080"
@@ -101,7 +123,7 @@ func goSwagger(app *iris.Application) {
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 
 	config := &swagger.Config{
-		URL: "http://localhost:8080/swagger/doc.json", // The url pointing to API definition
+		URL: "http://localhost:8080/swagger/swagger.json", // The url pointing to API definition
 	}
 	// use swagger middleware to
 	app.Get("/swagger/{any:path}", swagger.CustomWrapHandler(config, swaggerFiles.Handler))

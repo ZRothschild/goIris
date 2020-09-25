@@ -52,11 +52,9 @@ type Rotation struct {
 	Postfix string
 }
 
-func NewLog(viperKey string, viper *viper.Viper) (*Logger, error) {
+func NewLog(viper *viper.Viper, viperKey string) (l *Logger, err error) {
 	var (
-		err    error
 		config Config
-		l      *Logger
 	)
 	// 获取日志模块
 	if err = viper.UnmarshalKey(viperKey, &config); err != nil {
@@ -102,7 +100,7 @@ func NewLog(viperKey string, viper *viper.Viper) (*Logger, error) {
 		log.AddHook(grayHook)
 	}
 
-	if nil != config.Path && len(config.Path) > 0 {
+	if config.Path != nil && len(config.Path) > 0 {
 		writerMap := lfshook.WriterMap{}
 		if v, ok := config.Path["panic"]; ok && v != "" {
 			writerMap[logrus.PanicLevel], _ = rotatelogs.New(
@@ -170,10 +168,11 @@ func NewLog(viperKey string, viper *viper.Viper) (*Logger, error) {
 		log.AddHook(lfHook)
 	}
 	entry := logrus.NewEntry(log)
-	if nil != config.Extra && len(config.Extra) > 0 {
+	if config.Extra != nil && len(config.Extra) > 0 {
 		entry = entry.WithFields(config.Extra)
 	}
-	return &Logger{Entry: *entry, Level: level}, err
+	l = &Logger{Entry: *entry, Level: level}
+	return l, err
 }
 
 func (logger *Logger) Print(args ...interface{}) {

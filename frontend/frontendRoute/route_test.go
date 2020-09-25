@@ -60,7 +60,7 @@ func init() {
 	logSrvTest, _ = logger.NewLog(viperStringTest, newViperTest)
 
 	// 验证工具
-	viperStringTest, _ = viperKey.Validator("Default", newViperTest)
+	viperStringTest, _ = viperKey.Validator("Zh", newViperTest)
 	validateTest, transTest, _ = validators.NewValidators(viperStringTest, newViperTest)
 }
 

@@ -17,63 +17,58 @@ type Response struct {
 }
 
 // 响应错误
-func RspErr(msg string) (res Response) {
-	res = Response{
+func RspErr(msg string) Response {
+	return Response{
 		Status: Fail,
 		Msg:    msg,
 		Data:   nil,
 	}
-	return
+
 }
 
 // 响应成功数据
-func RspSuccess(data interface{}) (res Response) {
-	res = Response{
+func RspSuccess(data interface{}) Response {
+	return Response{
 		Status: Suc,
 		Msg:    "success",
 		Data:   data,
 	}
-	return
 }
 
 // 错误具体返回
-func Err(msg string, data interface{}) (res Response) {
-	res = Response{
+func Err(msg string, data interface{}) Response {
+	return Response{
 		Status: Fail,
 		Msg:    msg,
 		Data:   data,
 	}
-	return
 }
 
 // 响应成功具体返回
-func Success(msg string, data interface{}) (res Response) {
-	res = Response{
+func Success(msg string, data interface{}) Response {
+	return Response{
 		Status: Suc,
 		Msg:    msg,
 		Data:   data,
 	}
-	return
 }
 
 // 错误具体返回
 func CtxErr(ctx iris.Context, msg string, data interface{}) {
-	res := Response{
+	_, _ = ctx.JSON(Response{
 		Status: Fail,
 		Msg:    msg,
 		Data:   data,
-	}
-	_, _ = ctx.JSON(res)
+	})
 	return
 }
 
 // 响应成功具体返回
 func CtxSuccess(ctx iris.Context, msg string, data interface{}) {
-	res := Response{
+	_, _ = ctx.JSON(Response{
 		Status: Suc,
 		Msg:    msg,
 		Data:   data,
-	}
-	_, _ = ctx.JSON(res)
+	})
 	return
 }

@@ -4,7 +4,7 @@ Global:
 IrisForumBackend: # 项目名称
   Dev: # 开发环境
     MySql: #M ySQL数据库配置
-      Frontend: # 数据库配置名称
+      Backend: # 数据库配置名称
         Host: 127.0.0.1
         User: root
         DbName: iris_test
@@ -51,3 +51,5 @@ IrisForumBackend: # 项目名称
               Debug: debug
               Trace: trace
               Info:  info
+    JwtKey: ax#@1AC234.*$^
+
