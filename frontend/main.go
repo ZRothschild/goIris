@@ -6,6 +6,9 @@ import (
 )
 
 func main() {
+
+	return
+
 	app := iris.New()
 	frontendRoute.InitRoute(app)
 	_ = app.Listen(":8080")

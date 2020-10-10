@@ -52,15 +52,15 @@ func init() {
 	)
 
 	// 数据库
-	viperStringTest, _ = viperKey.PreKeyViper(newViperTest, "Frontend")
+	viperStringTest, _ = viperKey.PreKeyViper(newViperTest, "Mysql.Frontend")
 	dBTest, _ = db.NewMySql(newViperTest, viperStringTest)
 
 	// 获取日志
-	viperStringTest, _ = viperKey.PreKeyViper(newViperTest, "Service")
+	viperStringTest, _ = viperKey.PreKeyViper(newViperTest, "Log.Service")
 	logSrvTest, _ = logger.NewLog(newViperTest, viperStringTest)
 
 	// 验证工具
-	viperStringTest, _ = viperKey.PreKeyViper(newViperTest, "Zh")
+	viperStringTest, _ = viperKey.PreKeyViper(newViperTest, "Validator.Lang.Zh")
 	validateTest, transTest, _ = validators.NewValidators(newViperTest, viperStringTest)
 }
 

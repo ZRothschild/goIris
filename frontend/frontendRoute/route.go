@@ -51,7 +51,7 @@ func init() {
 	)
 
 	// 获取日志
-	viperString, err = viperKey.PreKeyViper(newViper, "Service")
+	viperString, err = viperKey.PreKeyViper(newViper, "Log.Service")
 	if err != nil {
 		// do
 	}
@@ -62,7 +62,7 @@ func init() {
 	}
 
 	// 数据库
-	viperString, err = viperKey.PreKeyViper(newViper, "Frontend")
+	viperString, err = viperKey.PreKeyViper(newViper, "MySql.Frontend")
 	if err != nil {
 		// do
 	}
@@ -73,7 +73,7 @@ func init() {
 	}
 
 	// 验证工具
-	viperString, err = viperKey.PreKeyViper(newViper, "Zh")
+	viperString, err = viperKey.PreKeyViper(newViper, "Validator.Lang.Zh")
 	if err != nil {
 		// do
 	}

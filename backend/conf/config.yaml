@@ -51,5 +51,6 @@ IrisForumBackend: # 项目名称
               Debug: debug
               Trace: trace
               Info:  info
-    JwtKey: ax#@1AC234.*$^
+    Jwt:
+      Sk: ax#@1AC234.*$^
 

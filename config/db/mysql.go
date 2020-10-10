@@ -36,7 +36,7 @@ func NewMySql(viper *viper.Viper, viperKey string) (*gorm.DB, error) {
 		return dB, err
 	}
 
-	if err = dB.Callback().Create().Before("gorm:create").Register("fill_id", func(db *gorm.DB) {
+	if err = dB.Callback().Create().Before("gorm:create").Register("fillId", func(db *gorm.DB) {
 		// 自动填充id
 		db.Statement.SetColumn("id", id.NextId(viper))
 	}); err != nil {

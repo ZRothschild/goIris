@@ -45,7 +45,7 @@ func init() {
 	)
 
 	// 获取日志
-	viperString, err = viperKey.PreKeyViper(newViper, "Service")
+	viperString, err = viperKey.PreKeyViper(newViper, "Log.Service")
 	if err != nil {
 		// do
 	}
@@ -56,7 +56,7 @@ func init() {
 	}
 
 	// 数据库
-	viperString, err = viperKey.PreKeyViper(newViper, "Backend")
+	viperString, err = viperKey.PreKeyViper(newViper, "MySql.Backend")
 	if err != nil {
 		// do
 	}
@@ -67,7 +67,7 @@ func init() {
 	}
 
 	// 用户登录Jwt
-	viperString, err = viperKey.PreKeyViper(newViper, "JwtKey")
+	viperString, err = viperKey.PreKeyViper(newViper, "Jwt.Sk")
 	if err != nil {
 		// do
 	}
@@ -85,7 +85,7 @@ func init() {
 	}
 
 	// 验证工具
-	viperString, err = viperKey.PreKeyViper(newViper, "Zh")
+	viperString, err = viperKey.PreKeyViper(newViper, "Validator.Lang.Zh")
 	if err != nil {
 		// do
 	}
